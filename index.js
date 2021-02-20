@@ -168,30 +168,27 @@ const config3 = {
 
 
 window.onload = function() {
-    Papa.parse('https://www.data.gouv.fr/fr/datasets/r/d3a98a30-893f-47f7-96c5-2f4bcaaa0d71', {
-        download: true,
-        delimiter:',',
-        header: true,
-        dynamicTyping:true,
-        skipEmptyLines:true,
-        complete: (results) => {
-            const data = results.data.sort((a,b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0)
-            let total = 0
-            let range = []
-            data.forEach((item,i) => {
-                item.deces_jour =  (item.total_deces_ehpad + item.total_deces_hopital) - total
-                range.push(item.deces_jour)
-                if (range.length > 7) range.shift()
-                const avg = Math.floor(range.reduce((a, b) => a + b, 0) / range.length)
-                item.deces_jour7 = avg
-                total+=item.deces_jour
-            })
-            init_data1(data)
-            init_data2(data)
-            init_data3(data)
-        }
-    });
-};
+    fetch('https://www.data.gouv.fr/fr/datasets/r/d2671c6c-c0eb-4e12-b69a-8e8f87fc224c',{redirect:'follow'})
+    .then(response => response.json())
+    .then(results => {
+        const data = results.sort((a,b) => (a.date < b.date) ? -1 : (a.date > b.date) ? 1 : 0)
+        let total = 0
+        let range = []
+        data.forEach((item,i) => {
+            if (isNaN(item.decesEhpad+0)) item.decesEhpad=0
+            if (isNaN(item.deces+0)) item.deces=0
+            item.deces_jour =  (item.decesEhpad + item.deces) - total
+            range.push(item.deces_jour)
+            if (range.length > 7) range.shift()
+            const avg = Math.floor(range.reduce((a, b) => a + b, 0) / range.length)
+            item.deces_jour7 = avg
+            total+=item.deces_jour
+        })
+        init_data1(data)
+        init_data2(data)
+        init_data3(data)
+    })
+}
 
 function init_data1(data) {
     config1.data.labels = data.map( item => item.date)
