@@ -10,3 +10,6 @@ Vague 1:
 Vague 2: 
 * elle démare à la date de début du second confinement : 30/10/2020-10-30
 * elle n'est pas fini
+
+Les données proviennent des publications gouvernementales ouvertes sur data.gouv.fr disponible ici :[dataset: donnees relatives à l'epidemie de covid 19 en france vue d'ensemble](https://www.data.gouv.fr/fr/datasets/donnees-relatives-a-lepidemie-de-covid-19-en-france-vue-densemble/).
+La mise à jour est dynamique (quotidienne)
